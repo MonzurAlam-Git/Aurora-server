@@ -1,8 +1,15 @@
-const express = require("express");
-const app = express();
+import cors from "cors";
+import express, { Application, Request, Response } from "express";
+const app: Application = express();
 
-app.get("/", (req, res) => {
-  res.send("Hello World!");
+app.use(cors());
+app.use(express.json());
+
+app.get("/", (req: Request, res: Response) => {
+  var a = 10;
+  res.send(a);
 });
 
-console.log(process.cwd());
+export default app;
+
+// console.log(process.cwd());
