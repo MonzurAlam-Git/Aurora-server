@@ -7,6 +7,3 @@ app.listen(process.env.PORT, () => {
 async function main() {
   await mongoose.connect(process.env.DB_URL);
 }
-
-// monzuralam16
-// aurora01234
