@@ -1,3 +1,4 @@
+import { ProductRoutes } from './../dist/app/Modules/Product/product.routes'
 import cors from 'cors'
 import express, { Application, Request, Response } from 'express'
 const app: Application = express()
@@ -5,10 +6,11 @@ const app: Application = express()
 app.use(cors())
 app.use(express.json())
 
-app.get('/', (req: Request, res: Response) => {
-  const a = 10
+// api endpoints
+app.use('/api/products', ProductRoutes)
 
-  res.send(a)
+app.get('/', (req: Request, res: Response) => {
+  res.send('Tawaqaltu Olallah')
 })
 
 export default app
