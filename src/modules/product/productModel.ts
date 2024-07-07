@@ -1,5 +1,12 @@
+import { ProductModel } from './productModel'
 import { model, Schema } from 'mongoose'
-import Product, { Inventory, Variant } from './productInterface'
+import Product, {
+  ProductMethods,
+  Inventory,
+  Variant,
+  ProductModel_new,
+} from './productInterface'
+import { boolean } from 'zod'
 
 const VariantSchema = new Schema<Variant>({
   type: {
@@ -23,7 +30,7 @@ const InventorySchema = new Schema<Inventory>({
   },
 })
 
-const productSchema = new Schema<Product>({
+const productSchema = new Schema<Product, ProductModel_new, ProductMethods>({
   name: {
     type: String,
     required: [true, 'Product name is required.'],
@@ -52,6 +59,18 @@ const productSchema = new Schema<Product>({
     type: InventorySchema,
     required: [true, 'Product inventory is required.'],
   },
+  isDeleted: {
+    type: Boolean,
+  },
 })
 
-export const ProductModel = model<Product>('product-model', productSchema)
+// custom instance methods
+productSchema.methods.isUserExists = async (name: string) => {
+  const existingUser = await ProductModel.findOne({ name })
+  return existingUser
+}
+
+export const ProductModel = model<Product, ProductModel_new>(
+  'product-model',
+  productSchema,
+)
