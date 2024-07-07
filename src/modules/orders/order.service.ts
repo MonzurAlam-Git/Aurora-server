@@ -6,4 +6,9 @@ const createOrderIntoDB = async (order: Order) => {
   return orderInstance
 }
 
-export const orderServices = { createOrderIntoDB }
+const getAllProductsFromDB = async () => {
+  const orders = await OrderModel.find()
+  return orders
+}
+
+export const orderServices = { createOrderIntoDB, getAllProductsFromDB }
