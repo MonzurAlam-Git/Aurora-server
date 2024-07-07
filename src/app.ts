@@ -1,7 +1,7 @@
-import { OrderRoutes } from './../dist/app/Modules/Orders/order.routes'
-import { ProductRoutes } from './../dist/app/Modules/Product/product.routes'
 import cors from 'cors'
 import express, { Application, Request, Response } from 'express'
+import { ProductRoutes } from './modules/product/product.routes'
+import { OrderRoutes } from './modules/orders/order.routes'
 const app: Application = express()
 
 app.use(cors())
