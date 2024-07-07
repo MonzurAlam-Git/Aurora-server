@@ -64,6 +64,14 @@ const productSchema = new Schema<Product, ProductModel_new, ProductMethods>({
   },
 })
 
+// this middleware will execute on create or save
+productSchema.pre('save', function () {
+  console.log('Pre Stage Data =>', this.name)
+})
+productSchema.post('save', function () {
+  console.log('Post Stage Data =>', this.name)
+})
+
 // custom instance methods
 productSchema.methods.isUserExists = async (name: string) => {
   const existingUser = await ProductModel.findOne({ name })

@@ -21,6 +21,9 @@ type Product = {
   isDeleted: { type: boolean; default: false }
 }
 
+// creating static
+
+// for creating instance
 export type ProductMethods = {
   isUserExists(name: string): Promise<Product | null>
 }

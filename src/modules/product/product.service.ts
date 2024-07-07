@@ -5,7 +5,7 @@ import { ProductModel } from './productModel'
 
 const insertProductIntoDB = async (product: Product) => {
   // Mongoose BuiltIn static Method
-  //   const productInstance = await ProductModel.create(product)
+  // const productInstance = await ProductModel.create(product)
 
   // Instance method
   const productInstance = new ProductModel(product)
