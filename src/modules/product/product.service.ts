@@ -1,6 +1,4 @@
-import { model } from 'mongoose'
 import Product from './productInterface'
-import mongoose from 'mongoose'
 import { ProductModel } from './productModel'
 
 const insertProductIntoDB = async (product: Product) => {
@@ -47,7 +45,7 @@ const deleteProductFromDB = async (id: string) => {
     // { upsert: true },
   )
 
-  console.log('id', result)
+  // console.log('id', result)
   return result
 }
 
@@ -66,11 +64,11 @@ const updateProductFromDB = async (id: string, updatedDoc: Product) => {
 // Search product
 const searchProductFromDB = async (searchTerm: string) => {
   // find
-  console.log('SearchProductFromDB b4', searchTerm)
+  // console.log('SearchProductFromDB b4', searchTerm)
   const result = await ProductModel.find({
     $name: { $text: { $search: searchTerm } },
   })
-  console.log('SearchProductFromDB after', result)
+  // console.log('SearchProductFromDB after', result)
   return result
 }
 

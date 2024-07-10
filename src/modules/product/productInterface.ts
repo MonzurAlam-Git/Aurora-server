@@ -18,7 +18,7 @@ type Product = {
   tags: string[]
   variants: Variant[]
   inventory: Inventory
-  isDeleted: { type: boolean; default: false }
+  isDeleted: boolean
 }
 
 // creating static

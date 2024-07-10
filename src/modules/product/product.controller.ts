@@ -1,8 +1,6 @@
 import { Request, Response } from 'express'
 import { ProductServices } from './product.service'
-import { ProductModel } from './productModel'
 import { ProductValidationSchema } from './product.validation'
-import { version } from 'os'
 
 const createProduct = async (req: Request, res: Response) => {
   try {
@@ -32,7 +30,7 @@ const getAllProduct = async (req: Request, res: Response) => {
 
     res.status(200).json({
       success: true,
-      message: 'Product is retrived succesfully',
+      message: 'Product fetched succesfully',
       data: result,
     })
   } catch (error: any) {
@@ -51,7 +49,7 @@ const getSingleProduct = async (req: Request, res: Response) => {
 
     res.status(200).json({
       success: true,
-      message: 'Product is retrived succesfully',
+      message: 'Product fetched successfully',
       data: result,
     })
   } catch (error: any) {
@@ -70,7 +68,7 @@ const deleteProduct = async (req: Request, res: Response) => {
 
     res.status(200).json({
       success: true,
-      message: 'Product is deleted succesfully',
+      message: 'Product deleted successfully',
       data: result,
     })
   } catch (error: any) {

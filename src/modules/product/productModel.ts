@@ -1,4 +1,3 @@
-import { ProductModel } from './productModel'
 import { model, Schema } from 'mongoose'
 import Product, {
   ProductMethods,
@@ -6,7 +5,6 @@ import Product, {
   Variant,
   ProductModel_new,
 } from './productInterface'
-import { boolean } from 'zod'
 
 const VariantSchema = new Schema<Variant>({
   type: {
@@ -62,6 +60,7 @@ const productSchema = new Schema<Product, ProductModel_new, ProductMethods>(
     },
     isDeleted: {
       type: Boolean,
+      default: false,
     },
   },
   {
@@ -75,11 +74,11 @@ const productSchema = new Schema<Product, ProductModel_new, ProductMethods>(
 
 // this middleware will execute on create or save
 productSchema.pre('save', function (next) {
-  console.log('Pre Stage Data =>', this.name)
+  // console.log('Pre Stage Data =>', this.name)
   next()
 })
 productSchema.post('save', function () {
-  console.log('Post Stage Data =>', this.name)
+  // console.log('Post Stage Data =>', this.name)
 })
 
 productSchema.pre('find', function (next) {

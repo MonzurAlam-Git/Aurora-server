@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { orderServices } from './order.service'
-import { z } from 'zod'
+// import { z } from 'zod'
 import { OrderValidationSchema } from './orders.validation'
 
 const createOrder = async (req: Request, res: Response) => {
@@ -32,7 +32,7 @@ const getAllOrders = async (req: Request, res: Response) => {
 
     res.status(200).json({
       success: true,
-      message: 'Order is retrived succesfully',
+      message: 'Order fetched successfully',
       data: orders,
     })
   } catch (error: any) {

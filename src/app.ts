@@ -12,7 +12,7 @@ app.use('/api/products', ProductRoutes)
 app.use('/api/orders', OrderRoutes)
 
 app.get('/', (req: Request, res: Response) => {
-  res.send('Tawaqaltu Olallah')
+  res.send('সব ঠিকঠাক')
 })
 
 export default app
