@@ -1,19 +1,23 @@
 import cors from 'cors'
 import express, { Application, Request, Response } from 'express'
-import { ProductRoutes } from './modules/product/product.routes'
-import { OrderRoutes } from './modules/orders/order.routes'
+import globalErrorHandler from './middlewares/globalErrorHandler'
+import notFound from './middlewares/notFound'
+import router from './routes'
 const app: Application = express()
 
 app.use(cors())
 app.use(express.json())
 
 // api endpoints
-app.use('/api/products', ProductRoutes)
-app.use('/api/orders', OrderRoutes)
+
+app.use('/api', router)
 
 app.get('/', (req: Request, res: Response) => {
   res.send('সব ঠিকঠাক')
 })
+
+app.use(globalErrorHandler)
+app.use(notFound)
 
 export default app
 

@@ -63,13 +63,18 @@ const updateProductFromDB = async (id: string, updatedDoc: Product) => {
 
 // Search product
 const searchProductFromDB = async (searchTerm: string) => {
-  // find
-  // console.log('SearchProductFromDB b4', searchTerm)
-  const result = await ProductModel.find({
-    $name: { $text: { $search: searchTerm } },
-  })
-  // console.log('SearchProductFromDB after', result)
+  // console.log('searchTerm', searchTerm)
+  const result = await ProductModel.find({ searchTerm })
+  console.log('Result', result)
   return result
+
+  // const regex = new RegExp(searchTerm, 'i') // 'i' makes the regex case-insensitive
+  // console.log(regex)
+
+  // const products = await ProductModel.find({
+  //   $or: [{ name: { $regex: regex } }, { description: { $regex: regex } }],
+  // })
+  // return products
 }
 
 export const ProductServices = {

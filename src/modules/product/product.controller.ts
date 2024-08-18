@@ -23,16 +23,51 @@ const createProduct = async (req: Request, res: Response) => {
     })
   }
 }
+// const searchProduct = async (req: Request, res: Response) => {
+//   try {
+//     const queryData = req.query
+//     console.log(queryData)
+//     const result = await ProductServices.searchProductFromDB(queryData)
+
+//     res.status(200).json({
+//       success: true,
+//       message: 'Product is Updated succesfully',
+//       data: result,
+//     })
+//   } catch (error) {
+//     res.status(500).json({
+//       success: false,
+//       message: error.message || 'something went wrong',
+//       error: error,
+//     })
+//   }
+// }
 
 const getAllProduct = async (req: Request, res: Response) => {
   try {
-    const result = await ProductServices.getAllProduct()
+    const queryData = req.query as unknown as string
+    if (queryData) {
+      const result = await ProductServices.searchProductFromDB(queryData)
+      res.status(200).json({
+        success: true,
+        message: 'Product fetched successfully',
+        data: result,
+      })
+    } else {
+      const result = await ProductServices.getAllProduct()
+      res.status(200).json({
+        success: true,
+        message: 'Product fetched successfully',
+        data: result,
+      })
+    }
 
-    res.status(200).json({
-      success: true,
-      message: 'Product fetched succesfully',
-      data: result,
-    })
+    // const result = await ProductServices.getAllProduct()
+    // res.status(200).json({
+    //   success: true,
+    //   message: 'Product fetched succesfully',
+    //   data: result,
+    // })
   } catch (error: any) {
     res.status(500).json({
       success: false,
@@ -104,31 +139,11 @@ const updateProduct = async (req: Request, res: Response) => {
   }
 }
 
-const searchProduct = async (req: Request, res: Response) => {
-  try {
-    // const searchTerm: string = req.query.searchTerm as string
-    const searchTerm = req.query.searchTerm as string
-    const products = await ProductServices.searchProductFromDB(searchTerm)
-
-    res.status(200).json({
-      success: true,
-      message: `Products matching search term '${searchTerm}' fetched successfully!`,
-      data: products,
-    })
-  } catch (error: any) {
-    res.status(500).json({
-      success: false,
-      message: 'Failed to fetch products.',
-      error: error.message,
-    })
-  }
-}
-
 export const ProductController = {
   createProduct,
   getAllProduct,
   getSingleProduct,
   deleteProduct,
   updateProduct,
-  searchProduct,
+  // searchProduct,
 }
