@@ -4,7 +4,8 @@ import { StudentModel } from '../student/studentModel'
 import { TUser } from './usersInterface'
 import { UserModel } from './usersModel'
 
-function generateSixDigitNumber() {
+//Year-Code-Number
+function generateStudentId() {
   // Generate a random number between 0 and 999999
   const randomNumber = Math.floor(Math.random() * 1000000)
 
@@ -36,7 +37,7 @@ const createStudentIntoDB = async (password: string, StudentData: TStudent) => {
   // Prepare User Data:
   const userData: Partial<TUser> = {}
 
-  userData.id = generateSixDigitNumber()
+  userData.id = generateStudentId()
   userData.password = password || (config.default_password as string)
   userData.role = 'student'
   // console.log('userData =>', userData)

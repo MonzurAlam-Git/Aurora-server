@@ -1,3 +1,4 @@
+import { AcademicSemesterModel } from './../academicSemester/academicSemester.model'
 import { Schema, model } from 'mongoose'
 import {
   StudentModelInterface,
@@ -135,8 +136,8 @@ const studentSchema = new Schema<TStudent, StudentModelInterface>(
     },
     profileImg: { type: String },
     admissionSemester: {
-      type: String,
-      default: 'First',
+      type: Schema.Types.ObjectId,
+      ref: AcademicSemesterModel,
     },
     academicDepartment: {
       type: String,
