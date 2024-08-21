@@ -1,18 +1,9 @@
 import mongoose from 'mongoose'
 import { TAcademicSemester } from './academicSemester.interface'
 import { AcademicSemesterModel } from './academicSemester.model'
+import { academicSemesterNameCodeMapper } from './academicSemester.utils'
 
 const createAcademicSemesterIntoDB = async (payLoad: TAcademicSemester) => {
-  type TAcademicSemesterNameCodeMapper = {
-    [key: string]: string
-  }
-
-  const academicSemesterNameCodeMapper: TAcademicSemesterNameCodeMapper = {
-    Autumn: '01',
-    Summer: '02',
-    Fall: '03',
-  }
-
   //For example -> academicSemesterNameCodeMapper[Autumn] which value is 01 , on another hand , payLoad.code is 1 .... As the 01 === 1 , so the semester will be created
 
   if (academicSemesterNameCodeMapper[payLoad.name] === payLoad.code) {

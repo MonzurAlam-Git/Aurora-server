@@ -1,5 +1,5 @@
 export type TUser = {
-  id: number
+  id: string
   password: string
   needsPasswordChange: boolean
   role: 'student' | 'faculty' | 'admin'
