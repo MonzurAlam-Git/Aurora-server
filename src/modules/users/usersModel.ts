@@ -3,7 +3,6 @@ import { TUser } from './usersInterface'
 import bcrypt from 'bcrypt'
 import config from '../../app/config'
 
-// User Schema
 const userSchema = new Schema<TUser>(
   {
     id: {
@@ -30,7 +29,6 @@ const userSchema = new Schema<TUser>(
     },
     isDeleted: {
       type: Boolean,
-      required: true,
       default: false,
     },
   },

@@ -1,3 +1,4 @@
+import AppError from '../../../app/config/Errors/AppError'
 import Product from './productInterface'
 import { ProductModel } from './productModel'
 
@@ -9,7 +10,7 @@ const insertProductIntoDB = async (product: Product) => {
   const productInstance = new ProductModel(product)
 
   if (await productInstance.isUserExists(product.name)) {
-    throw new Error('User already Exists')
+    throw new AppError(404, 'User already Exists')
   }
 
   const result = await productInstance.save()

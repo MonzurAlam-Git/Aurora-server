@@ -1,5 +1,9 @@
 import mongoose, { Schema } from 'mongoose'
 import { TAcademicDepartment } from './academicDepartment.interface'
+import AppError from '../../app/config/Errors/AppError'
+import httpStatus from 'http-status'
+
+//AppError = ErrorXExtraFeature
 
 const academicDepartmentSchema = new Schema<TAcademicDepartment>(
   {
@@ -18,18 +22,31 @@ academicDepartmentSchema.pre('save', async function (next) {
   })
 
   if (isDepartmentExists) {
-    throw new Error('Department Already Exists')
+    throw new AppError(404, 'Department Already Exists')
   }
 
   next()
 })
 
-academicDepartmentSchema.pre('findOneAndUpdate', async function name(next) {
-  const query = this.getQuery()
-  const isDepartmentExists = await AcademicDepartmentModel.findOne(query)
+// academicDepartmentSchema.pre('findOneAndUpdate', async function (next) {
+//   const query = this.getQuery()
+//   const isDepartmentExists = await AcademicDepartmentModel.findOne(query)
+//   console.log('findOneAndUpdate data', query, isDepartmentExists)
 
-  if (!isDepartmentExists) {
-    throw new Error('Dept doesnt exist')
+//   if (!isDepartmentExists) {
+//     throw new AppError(404, 'The Dept doesnt exist')
+//   }
+
+//   next()
+// })
+
+academicDepartmentSchema.pre('findOneAndUpdate', async function (next) {
+  const query = this.getQuery()
+  const isDepartmentExist = await AcademicDepartmentModel.findOne(query)
+  console.log('findOneAndUpdate data', query, isDepartmentExist)
+
+  if (!isDepartmentExist) {
+    throw new AppError(httpStatus.NOT_FOUND, 'This department does not exist! ')
   }
 
   next()

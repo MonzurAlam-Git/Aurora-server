@@ -21,8 +21,11 @@ const router = express.Router()
 //   }
 // }
 
-router.get('/all-students', StudentControllers.getAllStudents)
-router.post('/create-student', StudentControllers.createStudent)
+router.get('/', StudentControllers.getAllStudents)
+// router.post('/create-student', StudentControllers.createStudent)
+{
+  /* Student will be created through user, so posting through user not necessary */
+}
 router.get('/:studentId', StudentControllers.getSingleStudent)
 router.delete('/:studentId', StudentControllers.deleteStudent)
 

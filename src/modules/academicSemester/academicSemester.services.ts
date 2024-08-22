@@ -2,6 +2,7 @@ import mongoose from 'mongoose'
 import { TAcademicSemester } from './academicSemester.interface'
 import { AcademicSemesterModel } from './academicSemester.model'
 import { academicSemesterNameCodeMapper } from './academicSemester.utils'
+import AppError from '../../app/config/Errors/AppError'
 
 const createAcademicSemesterIntoDB = async (payLoad: TAcademicSemester) => {
   //For example -> academicSemesterNameCodeMapper[Autumn] which value is 01 , on another hand , payLoad.code is 1 .... As the 01 === 1 , so the semester will be created
@@ -10,7 +11,7 @@ const createAcademicSemesterIntoDB = async (payLoad: TAcademicSemester) => {
     const result = await AcademicSemesterModel.create(payLoad)
     return result
   } else {
-    throw new Error('Semester and Code are not Matched')
+    throw new AppError(404, 'Semester and Code are not Matched')
   }
 }
 
@@ -38,12 +39,16 @@ const updateAcademicSemesterIntoDB = async (
     payload.code &&
     academicSemesterNameCodeMapper[payload.name] !== payload.code
   ) {
-    throw new Error('Invalid Semester Code')
+    throw new AppError(404, 'Invalid Semester Code')
   }
 
-  const result = await AcademicSemester.findOneAndUpdate({ _id: id }, payload, {
-    new: true,
-  })
+  const result = await AcademicSemesterModel.findOneAndUpdate(
+    { _id: id },
+    payload,
+    {
+      new: true,
+    },
+  )
   return result
 }
 

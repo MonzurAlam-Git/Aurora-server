@@ -1,4 +1,3 @@
-import { AcademicSemesterModel } from './../academicSemester/academicSemester.model'
 import { Schema, model } from 'mongoose'
 import {
   StudentModelInterface,
@@ -7,6 +6,9 @@ import {
   TStudent,
   TUserName,
 } from './studentInterface'
+import { AcademicSemesterModel } from '../academicSemester/academicSemester.model'
+import { AcademicDepartmentModel } from '../academicDepartment/academicDepartment.model'
+import AppError from '../../app/config/Errors/AppError'
 
 const userNameSchema = new Schema<TUserName>({
   firstName: {
@@ -140,8 +142,8 @@ const studentSchema = new Schema<TStudent, StudentModelInterface>(
       ref: AcademicSemesterModel,
     },
     academicDepartment: {
-      type: String,
-      required: [true, 'Student must have an academic department info'],
+      type: Schema.Types.ObjectId,
+      ref: AcademicDepartmentModel,
     },
     isDeleted: {
       type: Boolean,
@@ -159,6 +161,16 @@ const studentSchema = new Schema<TStudent, StudentModelInterface>(
 // studentSchema.virtual('fullName').get(function () {
 //   return this.name.firstName + this.name.middleName + this.name.lastName
 // })
+
+studentSchema.pre('findOneAndUpdate', async function (next) {
+  const query = this.getQuery()
+  const doesStudentExist = await StudentModel.find(query)
+
+  if (doesStudentExist) {
+    throw new AppError(404, 'student you want to delete doesnt exist')
+  }
+  next()
+})
 
 export const StudentModel = model<TStudent, StudentModelInterface>(
   'Student-model',

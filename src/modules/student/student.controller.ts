@@ -5,22 +5,6 @@ import { StudentServices } from './student.services'
 import sendResponse from '../../utils/sendResponse'
 import catchAsync from '../../utils/catchAsync'
 
-const createStudent = async (req: Request, res: Response) => {
-  try {
-    const { student: studentData } = req.body
-    const result = await StudentServices.createStudentIntoDB(studentData)
-
-    res.status(200).json({
-      success: true,
-      message: 'Student is created successfully',
-      data: result,
-    })
-    console.log('student created successfully')
-  } catch (err) {
-    console.log(err)
-  }
-}
-
 const getSingleStudent = catchAsync(async (req: Request, res: Response) => {
   const { studentId } = req.params
   const result = await StudentServices.getSingleStudentFromDB(studentId)
@@ -47,6 +31,7 @@ const getAllStudents = catchAsync(async (req: Request, res: Response) => {
 const deleteStudent = catchAsync(async (req: Request, res: Response) => {
   const { studentId } = req.params
   const result = await StudentServices.deleteStudentFromDB(studentId)
+  console.log(studentId, result)
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -57,7 +42,6 @@ const deleteStudent = catchAsync(async (req: Request, res: Response) => {
 })
 
 export const StudentControllers = {
-  createStudent,
   getAllStudents,
   getSingleStudent,
   deleteStudent,

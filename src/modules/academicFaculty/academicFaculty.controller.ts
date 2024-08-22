@@ -49,7 +49,7 @@ const getAllAcademicFaculty = catchAsync(
 const updateAcademicFaculty = catchAsync(
   async (req: Request, res: Response) => {
     const { id } = req.params
-    const { updatedDoc } = req.body
+    const updatedDoc = req.body
 
     await AcademicFacultyServices.updateAcademicFacultyFromDB(id, updatedDoc)
 
