@@ -162,15 +162,15 @@ const studentSchema = new Schema<TStudent, StudentModelInterface>(
 //   return this.name.firstName + this.name.middleName + this.name.lastName
 // })
 
-studentSchema.pre('findOneAndUpdate', async function (next) {
-  const query = this.getQuery()
-  const doesStudentExist = await StudentModel.find(query)
+// studentSchema.pre('findOneAndUpdate', async function (next) {
+//   const query = this.getQuery()
+//   const doesStudentExist = await StudentModel.find(query)
 
-  if (doesStudentExist) {
-    throw new AppError(404, 'student you want to delete doesnt exist')
-  }
-  next()
-})
+//   if (!doesStudentExist) {
+//     throw new AppError(404, 'student you want to delete doesnt exist')
+//   }
+//   next()
+// })
 
 export const StudentModel = model<TStudent, StudentModelInterface>(
   'Student-model',

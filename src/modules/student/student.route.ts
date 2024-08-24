@@ -1,5 +1,5 @@
 import express from 'express'
-import { StudentControllers } from './student.controller'
+import { StudentControllers, updateStudent } from './student.controller'
 import { NextFunction, Request, Response } from 'express'
 import { AnyZodObject } from 'zod'
 import { createStudentValidationSchema } from './student.validation'
@@ -28,5 +28,6 @@ router.get('/', StudentControllers.getAllStudents)
 }
 router.get('/:studentId', StudentControllers.getSingleStudent)
 router.delete('/:studentId', StudentControllers.deleteStudent)
+router.patch('/:studentId', StudentControllers.updateStudent)
 
 export const StudentRoutes = router

@@ -57,6 +57,7 @@ const createStudentIntoDB = async (password: string, payload: TStudent) => {
     }
   } catch (error) {
     await session.abortTransaction()
+    throw new AppError(404, 'User Creation process failed')
   }
 }
 
