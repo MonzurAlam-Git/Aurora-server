@@ -5,7 +5,7 @@ import {
   AcademicSemesterNames,
   Months,
 } from './academicSemester.const'
-import AppError from '../../app/config/Errors/AppError'
+import AppError from '../../app/error/AppError'
 
 const academicSemesterSchema = new Schema<TAcademicSemester>({
   name: {

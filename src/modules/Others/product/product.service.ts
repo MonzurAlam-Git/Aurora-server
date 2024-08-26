@@ -1,4 +1,4 @@
-import AppError from '../../../app/config/Errors/AppError'
+import AppError from '../../../app/error/AppError'
 import Product from './productInterface'
 import { ProductModel } from './productModel'
 

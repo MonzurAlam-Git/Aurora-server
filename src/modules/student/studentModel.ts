@@ -8,7 +8,7 @@ import {
 } from './studentInterface'
 import { AcademicSemesterModel } from '../academicSemester/academicSemester.model'
 import { AcademicDepartmentModel } from '../academicDepartment/academicDepartment.model'
-import AppError from '../../app/config/Errors/AppError'
+import AppError from '../../app/error/AppError'
 
 const userNameSchema = new Schema<TUserName>({
   firstName: {

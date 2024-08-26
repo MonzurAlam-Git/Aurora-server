@@ -1,6 +1,6 @@
 import mongoose, { Schema } from 'mongoose'
 import { TAcademicDepartment } from './academicDepartment.interface'
-import AppError from '../../app/config/Errors/AppError'
+import AppError from '../../app/error/AppError'
 import httpStatus from 'http-status'
 
 //AppError = ErrorXExtraFeature
@@ -16,17 +16,17 @@ const academicDepartmentSchema = new Schema<TAcademicDepartment>(
   { timestamps: true },
 )
 
-academicDepartmentSchema.pre('save', async function (next) {
-  const isDepartmentExists = await AcademicDepartmentModel.findOne({
-    name: this.name,
-  })
+// academicDepartmentSchema.pre('save', async function (next) {
+//   const isDepartmentExists = await AcademicDepartmentModel.findOne({
+//     name: this.name,
+//   })
 
-  if (isDepartmentExists) {
-    throw new AppError(404, 'Department Already Exists')
-  }
+//   if (isDepartmentExists) {
+//     throw new AppError(404, 'Department Already Exists')
+//   }
 
-  next()
-})
+//   next()
+// })
 
 // academicDepartmentSchema.pre('findOneAndUpdate', async function (next) {
 //   const query = this.getQuery()

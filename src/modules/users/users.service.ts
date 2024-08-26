@@ -1,7 +1,7 @@
 import { AcademicSemesterModel } from './../academicSemester/academicSemester.model'
 import mongoose, { Mongoose } from 'mongoose'
 import config from '../../app/config'
-import AppError from '../../app/config/Errors/AppError'
+import AppError from '../../app/error/AppError'
 
 import { TStudent } from '../student/studentInterface'
 import { StudentModel } from '../student/studentModel'
