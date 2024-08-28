@@ -10,6 +10,7 @@ import handleZodError from '../app/error/handleZodError'
 import handleValidationError from '../app/error/handleValidationError'
 import handleCastError from '../app/error/handleCastError'
 import handleDuplicateError from '../app/error/handleDuplicateError'
+import AppError from '../app/error/AppError'
 
 const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
   // By default Values of Error Handler
@@ -42,6 +43,23 @@ const globalErrorHandler: ErrorRequestHandler = (err, req, res, next) => {
     statusCode = error_duplication.statusCode
     message = error_duplication.message
     errorSource = error_duplication.errorSources
+  } else if (err instanceof AppError) {
+    statusCode = err?.statusCode
+    message = err?.message
+    errorSource = [
+      {
+        path: '',
+        message: err.message,
+      },
+    ]
+  } else if (err instanceof Error) {
+    message = err?.message
+    errorSource = [
+      {
+        path: '',
+        message: err.message,
+      },
+    ]
   }
 
   return res.status(statusCode).json({

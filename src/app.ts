@@ -14,6 +14,7 @@ app.use('/api', router)
 
 app.get('/', (req: Request, res: Response) => {
   res.send('সব ঠিকঠাক')
+  // Promise.reject()
 })
 
 app.use(globalErrorHandler)
