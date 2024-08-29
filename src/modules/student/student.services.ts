@@ -21,25 +21,22 @@ const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
       [field] : {$regex : searchTerm, $options : i}
     */
 
-  const searchResult = StudentModel.find({
+  const searchQuery = StudentModel.find({
     $or: ['email', 'name.lastName'].map((field) => ({
       [field]: { $regex: searchTerm, $options: 'i' },
     })),
   })
-  // console.log(searchResult)
-  // return searchResult
 
   // if spread is applied over array then [...query]
   // if spread is applied over object then {...query}
 
   // Excluding items for cleaning other query params from query of sorting functionality
-  const excludedItems = ['searchTerm', 'email', 'sort', 'limit']
+  const excludedItems = ['searchTerm', 'email', 'sort', 'limit', 'page']
   const queryObj = { ...query }
 
   excludedItems.forEach((element) => delete queryObj[element])
-  // return searchResult
 
-  const filteredResult = searchResult
+  const filteredQuery = searchQuery
     .find(queryObj)
     .populate('admissionSemester')
     .populate({
@@ -49,159 +46,48 @@ const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
       },
     })
 
-  // Be dafault sort value , if its find any query in url then createdAt will be replaced
+  // Be default sort value , if its find any query in url then createdAt will be replaced
   let sort = '-createdAt'
 
   if (query?.sort) {
     sort = query.sort as string
   }
 
-  const sortedResult = filteredResult.sort(sort)
+  const sortedQuery = filteredQuery.sort(sort)
+  // console.log(sortedQuery)
 
+  let page = 1
   let limit = 1
+  let skip = 0
 
   if (query?.limit) {
-    limit = query.limit as number
+    limit = Number(query.limit)
   }
-  const limitResult = await sortedResult.limit(limit)
 
-  // console.log(queryObj)
-  return limitResult
+  if (query?.page) {
+    page = Number(query.page)
+    skip = (page - 1) * limit
+  }
+
+  const paginatedQuery = sortedQuery.skip(skip)
+
+  const limitQuery = paginatedQuery.limit(limit)
+
+  // select field
+  let fields = '-__v'
+
+  if (query?.fields) {
+    fields = (query.fields as string).split(',').join(' ')
+    console.log(fields)
+  }
+  const fieldQuery = await limitQuery.select(fields)
+
+  return fieldQuery
 }
 
 {
   /* PH Code */
 }
-// const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
-//   const queryObj = { ...query } // copying req.query object so that we can mutate the copy object
-
-//   let searchTerm = '' // SET DEFAULT VALUE
-
-//   // IF searchTerm  IS GIVEN SET IT
-//   if (query?.searchTerm) {
-//     searchTerm = query?.searchTerm as string
-//   }
-
-//   // WE ARE DYNAMICALLY DOING IT USING LOOP
-//   const searchQuery = StudentModel.find({
-//     $or: studentSearchableFields.map((field) => ({
-//       [field]: { $regex: searchTerm, $options: 'i' },
-//     })),
-//   })
-
-//   // FILTERING fUNCTIONALITY:
-
-//   const excludeFields = ['searchTerm', 'sort', 'limit', 'page', 'fields']
-//   excludeFields.forEach((el) => delete queryObj[el]) // DELETING THE FIELDS SO THAT IT CAN'T MATCH OR FILTER EXACTLY
-
-//   const filterQuery = searchQuery
-//     .find(queryObj)
-//     .populate('admissionSemester')
-//     .populate({
-//       path: 'academicDepartment',
-//       populate: {
-//         path: 'academicFaculty',
-//       },
-//     })
-//   return filterQuery
-
-//
-//    SORTING FUNCTIONALITY:
-
-//   let sort = '-createdAt'; // SET DEFAULT VALUE
-
-//   IF sort  IS GIVEN SET IT
-
-//    if (query.sort) {
-//     sort = query.sort as string;
-//   }
-
-//    const sortQuery = filterQuery.sort(sort);
-
-//    // PAGINATION FUNCTIONALITY:
-
-//    let page = 1; // SET DEFAULT VALUE FOR PAGE
-//    let limit = 1; // SET DEFAULT VALUE FOR LIMIT
-//    let skip = 0; // SET DEFAULT VALUE FOR SKIP
-
-//   // IF limit IS GIVEN SET IT
-
-//   if (query.limit) {
-//     limit = Number(query.limit);
-//   }
-
-//   // IF page IS GIVEN SET IT
-
-//   if (query.page) {
-//     page = Number(query.page);
-//     skip = (page - 1) * limit;
-//   }
-
-//   const paginateQuery = sortQuery.skip(skip);
-
-//   const limitQuery = paginateQuery.limit(limit);
-
-//   // FIELDS LIMITING FUNCTIONALITY:
-
-//   // HOW OUR FORMAT SHOULD BE FOR PARTIAL MATCH
-
-//   fields: 'name,email'; // WE ARE ACCEPTING FROM REQUEST
-//   fields: 'name email'; // HOW IT SHOULD BE
-
-//   let fields = '-__v'; // SET DEFAULT VALUE
-
-//   if (query.fields) {
-//     fields = (query.fields as string).split(',').join(' ');
-
-//   }
-
-//   const fieldQuery = await limitQuery.select(fields);
-
-//   return fieldQuery;
-
-//   */
-// }
-
-{
-  /*    chat Gpt Code*/
-}
-// const getAllStudentsFromDB = async (query: Record<string, unknown>) => {
-//   let searchTerm = ''
-
-//   if (query?.searchTerm) {
-//     searchTerm = query.searchTerm as string
-//   }
-
-//   const queryObj = { ...query }
-//   const excludedItems = ['searchTerm']
-//   excludedItems.forEach((element) => delete queryObj[element])
-
-//   const searchResult = await StudentModel.find({
-//     $or: ['email', 'name.lastName'].map((field) => ({
-//       [field]: { $regex: searchTerm, $options: 'i' },
-//     })),
-//     ...queryObj, // Apply additional filters
-//   })
-//     .populate('admissionSemester')
-//     .populate({
-//       path: 'academicDepartment',
-//       populate: {
-//         path: 'academicFaculty',
-//       },
-//     })
-//   // return searchResult
-
-//   // sort functionality implement
-//   let sort = '-createdAt'
-
-//   console.log(query)
-
-//   if (query.sort) {
-//     sort = query.sort
-//   }
-//   const sortResult = searchResult.sort(sort)
-//   return sortResult
-// }
 
 const getSingleStudentFromDB = async (id: string) => {
   // const result = await StudentModel.aggregate([{ $match: { id } }])
