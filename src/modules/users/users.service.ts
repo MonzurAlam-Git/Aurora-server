@@ -9,6 +9,9 @@ import { generateStudentId } from './users.utils'
 import { TUser } from './usersInterface'
 import { UserModel } from './usersModel'
 import httpStatus from 'http-status'
+import { TFaculty } from '../faculties/faculties.interface'
+import { generateFacultyId } from '../faculties/faculties.utils'
+import FacultyModel from '../faculties/faculties.model'
 
 // My createStudent
 const createStudentIntoDB = async (password: string, payload: TStudent) => {
@@ -63,6 +66,43 @@ const createStudentIntoDB = async (password: string, payload: TStudent) => {
     await session.abortTransaction()
     await session.endSession()
     throw new AppError(404, 'User Creation process failed')
+  }
+}
+
+const createFacultiesIntoDB = async (password: string, payload: TFaculty) => {
+  const session = await mongoose.startSession()
+
+  //initialize userData
+  const userData: Partial<TUser> = {}
+  //Fill the value
+  userData.password = password || config.default_password
+  userData.role = 'faculty'
+
+  // generate facultyId
+  try {
+    session.startTransaction()
+
+    userData.id = await generateFacultyId()
+
+    const newUser = await UserModel.create([payload], { session })
+    if (newUser.length) {
+      payload.id = newUser[0].id
+      payload.user = newUser[0]._id
+    } else {
+      throw new Error('User creation failed')
+    }
+
+    const newFaculty = await FacultyModel.create([payload], { session })
+    if (newFaculty.length) {
+      session.commitTransaction()
+      session.endSession()
+      return newFaculty
+    } else {
+      console.log('Faculty creation failed')
+    }
+  } catch (error) {
+    await session.abortTransaction()
+    throw new AppError(404, 'Faculty and User not cerated')
   }
 }
 
@@ -126,6 +166,7 @@ const createStudentIntoDB = async (password: string, payload: TStudent) => {
 // }
 export const UserServices = {
   createStudentIntoDB,
+  createFacultiesIntoDB,
 }
 
 // Mongoose BuiltIn static Method

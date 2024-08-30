@@ -3,6 +3,7 @@ import { UserController } from './users.controller'
 
 import { studentValidation } from '../student/student.validation'
 import { validateRequest } from '../../middlewares/validateRequest'
+import { FacultyValidation } from '../faculties/faculties.validation'
 
 const router = express.Router()
 
@@ -10,6 +11,11 @@ router.post(
   '/create-student',
   validateRequest(studentValidation.createStudentValidationSchema),
   UserController.createStudent,
+)
+router.post(
+  '/create-faculty',
+  validateRequest(FacultyValidation.createFacultyValidationSchema),
+  UserController.createFaculties,
 )
 
 // router.get('/', ProductController.getAllProduct)

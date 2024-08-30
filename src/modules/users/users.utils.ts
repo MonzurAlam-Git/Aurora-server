@@ -24,7 +24,7 @@ export const generateStudentId = async (payload: TAcademicSemester) => {
   let currentId = (0).toString()
 
   const lastStudentId = await findLastStudentId()
-  console.log('lastStudentId', lastStudentId)
+
   const lastStudentYear = Number(lastStudentId?.substring(0, 4))
   const lastStudentSemesterCode = lastStudentId?.substring(4, 6)
 
